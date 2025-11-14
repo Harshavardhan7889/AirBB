@@ -1,0 +1,117 @@
+/* Admin Area Styles */
+
+/* Form Validation Styles */
+.is-invalid {
+    border-color: #dc3545;
+    box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.25);
+}
+
+.is-valid {
+    border-color: #28a745;
+    box-shadow: 0 0 0 0.2rem rgba(40, 167, 69, 0.25);
+}
+
+.field-validation-error {
+    color: #dc3545;
+    font-size: 0.875em;
+    margin-top: 0.25rem;
+}
+
+/* Additional Admin-specific styles can go here */
+.admin-header {
+    background-color: #f8f9fa;
+    padding: 1rem;
+    margin-bottom: 2rem;
+    border-bottom: 1px solid #dee2e6;
+}
+
+.admin-form {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.admin-btn {
+    min-width: 120px;
+}
+
+/* Tab styling */
+.nav-tabs .nav-link {
+    color: #495057;
+    border: 1px solid transparent;
+}
+
+.nav-tabs .nav-link.active {
+    color: #495057;
+    background-color: #fff;
+    border-color: #dee2e6 #dee2e6 #fff;
+}
+
+/* Table styling */
+.table th {
+    border-top: none;
+}
+
+.table-hover tbody tr:hover {
+    background-color: rgba(0, 0, 0, 0.075);
+}
+
+/* Button styling */
+.btn-sm {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.875rem;
+}
+
+/* Alert styling */
+.alert {
+    margin-bottom: 1rem;
+}
+
+/* Form styling */
+.admin-form {
+    max-width: 800px;
+}
+
+.card {
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+}
+
+.card-title {
+    margin-bottom: 1.5rem;
+    color: #495057;
+}
+
+/* Responsive table */
+@media (max-width: 768px) {
+    .table-responsive {
+        font-size: 0.875rem;
+    }
+    
+    .btn-sm {
+        padding: 0.125rem 0.25rem;
+        font-size: 0.75rem;
+    }
+}
+
+/* Date input styling */
+input[type="date"] {
+    position: relative;
+}
+
+input[type="date"]:invalid {
+    color: #999;
+}
+
+input[type="date"]:focus:invalid {
+    border-color: #dc3545;
+}
+
+/* Date input validation */
+input[type="date"].is-invalid {
+    border-color: #dc3545;
+    background-image: none;
+}
+
+input[type="date"].is-valid {
+    border-color: #28a745;
+    background-image: none;
+}

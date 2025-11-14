@@ -1,0 +1,51 @@
+body {
+    margin-top: 70px;
+}
+body {
+    margin-top: 70px; /* Keep this if you still have a fixed-top navbar */
+
+    /* Background image properties */
+    background-image: url(../images/background.jpg); /* Or .png, .jpeg, etc. */
+    background-size: cover; /* This makes the image cover the entire body */
+    background-position: center center; /* Centers the image */
+    background-repeat: no-repeat; /* Prevents the image from repeating */
+    background-attachment: fixed; /* Keeps the background fixed when scrolling */
+}
+main, footer {
+    padding: 0 0.5em;
+}
+
+a {
+    text-decoration: none;
+}
+/* Style for the footer navigation list */
+.footer-nav {
+    list-style: none;  /* Removes the default bullet points */
+    padding-left: 0;   /* Removes default padding */
+    text-align: center;/* Centers the items within the footer */
+}
+
+/* Display list items side-by-side */
+.footer-nav li {
+    display: inline;
+}
+
+/* Add a centered dot after each item, except for the last one */
+.footer-nav li:not(:last-child)::after {
+    content: '•';
+    margin: 0 0.5em; /* Adds space around the dot */
+}
+
+.residence-img {
+    width: 100%;
+    height: 220px;            
+    object-fit: cover;
+    object-position: center;
+    display: block;
+}
+
+
+.card-img-top.residence-img {
+    border-bottom-left-radius: 0.5rem;
+    border-bottom-right-radius: 0.5rem;
+}
