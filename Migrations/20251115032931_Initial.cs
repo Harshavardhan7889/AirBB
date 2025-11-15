@@ -57,7 +57,7 @@ namespace AirBB.Migrations
                     BuildYear = table.Column<int>(type: "INTEGER", nullable: false),
                     GuestNumber = table.Column<int>(type: "INTEGER", nullable: false),
                     BedroomNumber = table.Column<int>(type: "INTEGER", nullable: false),
-                    BathroomNumber = table.Column<int>(type: "INTEGER", nullable: false),
+                    BathroomNumber = table.Column<decimal>(type: "TEXT", nullable: false),
                     PricePerNight = table.Column<decimal>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
@@ -68,13 +68,13 @@ namespace AirBB.Migrations
                         column: x => x.ClientID,
                         principalTable: "Clients",
                         principalColumn: "ClientID",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Residences_Locations_LocationID",
                         column: x => x.LocationID,
                         principalTable: "Locations",
                         principalColumn: "LocationID",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -120,7 +120,7 @@ namespace AirBB.Migrations
             migrationBuilder.InsertData(
                 table: "Residences",
                 columns: new[] { "ResidenceID", "BathroomNumber", "BedroomNumber", "BuildYear", "ClientID", "GuestNumber", "LocationID", "Name", "PricePerNight", "ResidencePicture" },
-                values: new object[] { 1, 1, 2, 2015, 1, 4, 6, "Chicago Loop Apartment", 150.00m, "chicago.jpg" });
+                values: new object[] { 1, 1.0m, 2, 2015, 1, 4, 6, "Chicago Loop Apartment", 150.00m, "chicago.jpg" });
 
             migrationBuilder.InsertData(
                 table: "Reservations",

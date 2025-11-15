@@ -39,26 +39,35 @@ $(document).ready(function () {
             } else {
                 $element.removeClass('is-valid');
             }
+        },
+        
+        // IMPORTANT: Override submitHandler to prevent auto tab switching
+        submitHandler: function(form) {
+            // Let the form submit normally - don't prevent it
+            form.submit();
         }
     });
 
-    // Custom validation method for contact requirement
+    // SIMPLIFIED: Custom validation method for contact requirement
     $.validator.addMethod("contactrequired", function (value, element, params) {
         var phoneValue = $("#PhoneNumber").val().trim();
         var emailValue = $("#Email").val().trim();
+        
+        // At least one must have content
         return phoneValue.length > 0 || emailValue.length > 0;
     }, "Either Phone Number or Email must be provided.");
 
     // Custom validation method for SSN format
     $.validator.addMethod("ssnformat", function (value, element) {
-        if (value === "") return true; // Let required handle empty values
+        if (value === "") return false; // SSN is required, so empty is not valid
         return /^\d{3}-?\d{2}-?\d{4}$/.test(value);
     }, "Please enter a valid SSN format (XXX-XX-XXXX)");
 
-    // Custom validation method for phone format
+    // Custom validation method for phone format - more lenient
     $.validator.addMethod("phoneformat", function (value, element) {
-        if (value === "") return true; // Let contactrequired handle empty values
-        return /^[\+]?[1-9]?[\s\-\(\)]?[\d\s\-\(\)]{10,14}$/.test(value);
+        if (value === "") return true; // Empty is OK, contactrequired handles the requirement
+        // More flexible phone validation
+        return /^[\+]?[1-9]?[\s\-\(\)]?[\d\s\-\(\)]{9,}$/.test(value.replace(/\s/g, ''));
     }, "Please enter a valid phone number format");
 
     // Custom validation method for DOB - not future date
@@ -113,34 +122,65 @@ $(document).ready(function () {
         }
     });
 
-    // Phone and Email validation (existing code)
-    $("#PhoneNumber").rules("remove", "required");
+    // SIMPLIFIED: Phone validation - only format validation, contact validation handled separately
     $("#PhoneNumber").rules("add", {
-        contactrequired: true,
         phoneformat: true,
         messages: {
-            contactrequired: "Either Phone Number or Email must be provided",
             phoneformat: "Please enter a valid phone number format"
         }
     });
     
-    $("#Email").rules("remove", "required");
+    // SIMPLIFIED: Email validation - only format validation, contact validation handled separately
     $("#Email").rules("add", {
-        contactrequired: true,
         email: true,
         messages: {
-            contactrequired: "Either Phone Number or Email must be provided",
             email: "Please enter a valid email address format"
         }
     });
 
-    // Real-time validation on input change
-    $("#PhoneNumber, #Email").on('input blur', function() {
-        validator.element("#PhoneNumber");
-        validator.element("#Email");
+    // FIXED: Contact validation - only validate when both are empty
+    function validateContact() {
+        var phoneValue = $("#PhoneNumber").val().trim();
+        var emailValue = $("#Email").val().trim();
+        var phoneSpan = $("#PhoneNumber").closest('.row').find('span[data-valmsg-for="PhoneNumber"]');
+        var emailSpan = $("#Email").closest('.row').find('span[data-valmsg-for="Email"]');
+        
+        if (phoneValue.length === 0 && emailValue.length === 0) {
+            // Both are empty - show error on both
+            if (!phoneSpan.text().includes("Either Phone Number or Email")) {
+                phoneSpan.append('<div class="contact-error">Either Phone Number or Email must be provided.</div>');
+            }
+            if (!emailSpan.text().includes("Either Phone Number or Email")) {
+                emailSpan.append('<div class="contact-error">Either Phone Number or Email must be provided.</div>');
+            }
+            $("#PhoneNumber, #Email").addClass('is-invalid');
+            return false;
+        } else {
+            // At least one has content - clear contact errors
+            phoneSpan.find('.contact-error').remove();
+            emailSpan.find('.contact-error').remove();
+            
+            // Only remove invalid styling if no other errors exist
+            if (phoneValue.length > 0 && phoneSpan.text().trim().length === 0) {
+                $("#PhoneNumber").removeClass('is-invalid').addClass('is-valid');
+            }
+            if (emailValue.length > 0 && emailSpan.text().trim().length === 0) {
+                $("#Email").removeClass('is-invalid').addClass('is-valid');
+            }
+            return true;
+        }
+    }
+
+    // Contact validation on change
+    $("#PhoneNumber, #Email").on('input blur keyup', function() {
+        // First validate the individual field format
+        validator.element(this);
+        
+        // Then validate contact requirement
+        setTimeout(validateContact, 100);
     });
     
-    // Validate other fields on blur (including DOB)
+    // Validate other fields on blur
     $("#Name, #SSN, #UserType, #DOB").on('blur', function() {
         validator.element(this);
     });
@@ -155,6 +195,14 @@ $(document).ready(function () {
         var $this = $(this);
         if ($this.val().trim().length === 0) {
             $this.removeClass('is-valid is-invalid');
+        }
+    });
+    
+    // Validate contact requirement on form submission
+    $("#user-form").on('submit', function(e) {
+        if (!validateContact()) {
+            e.preventDefault();
+            return false;
         }
     });
     

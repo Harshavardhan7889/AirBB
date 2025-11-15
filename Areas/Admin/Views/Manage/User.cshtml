@@ -33,7 +33,15 @@
         <!-- Add User Tab -->
         <div class="tab-pane fade show active" id="add-user" role="tabpanel">
             <div class="card mt-3">
-                <div class="card-body">                    
+                <div class="card-body">
+                    <!-- ADDED: Model-level validation summary -->
+                    @if (!ViewData.ModelState.IsValid)
+                    {
+                        <div class="alert alert-danger">
+                            <strong>Please fix the errors below:</strong>
+                        </div>
+                    }
+                    
                     <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
 
                     <form id="user-form" asp-action="User" method="post" class="admin-form">
@@ -52,7 +60,8 @@
                         <div class="row mb-2">
                             <label asp-for="PhoneNumber" class="col-form-label col-md-2"></label>
                             <div class="col-md-4">
-                                <input asp-for="PhoneNumber" class="form-control" placeholder="(555) 123-4567" />
+                                <input asp-for="PhoneNumber" class="form-control" placeholder="(555) 123-4567" data-val="false" />
+                                <small class="form-text text-muted">Either phone number or email is required</small>
                             </div>
                             <div class="col">
                                 <span asp-validation-for="PhoneNumber" class="text-danger"></span>
@@ -61,7 +70,8 @@
                         <div class="row mb-2">
                             <label asp-for="Email" class="col-form-label col-md-2"></label>
                             <div class="col-md-4">
-                                <input asp-for="Email" class="form-control" type="email" placeholder="user@example.com" />
+                                <input asp-for="Email" class="form-control" type="email" placeholder="user@example.com" data-val="false" />
+                                <small class="form-text text-muted">Either phone number or email is required</small>
                             </div>
                             <div class="col">
                                 <span asp-validation-for="Email" class="text-danger"></span>

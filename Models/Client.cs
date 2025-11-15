@@ -1,7 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
-
 namespace AirBB.Models
 {
     public class Client : IValidatableObject
@@ -15,10 +14,12 @@ namespace AirBB.Models
         
         [Display(Name = "Phone Number")]
         [Phone(ErrorMessage = "Please enter a valid phone number")]
+        [ContactRequired("Email", ErrorMessage = "Either Phone Number or Email must be provided")]
         public string PhoneNumber { get; set; } = string.Empty;
         
         [Display(Name = "Email")]
         [EmailAddress(ErrorMessage = "Please enter a valid email address")]
+        [ContactRequired("PhoneNumber", ErrorMessage = "Either Phone Number or Email must be provided")]
         public string Email { get; set; } = string.Empty;
         
         [Required(ErrorMessage = "SSN is required")]
@@ -32,7 +33,7 @@ namespace AirBB.Models
         
         [Display(Name = "Date of Birth")]
         [DataType(DataType.Date)]
-        public DateTime? DOB { get; set; } = null; // Nullable to allow blank
+        public DateTime? DOB { get; set; } = null;
 
         // Static property for UserType options
         public static Dictionary<string, string> UserTypeOptions => new Dictionary<string, string>
@@ -42,17 +43,9 @@ namespace AirBB.Models
             { "Client", "Client" }
         };
 
-        // Custom validation logic
+        // Custom validation logic - SIMPLIFIED since ContactRequired handles phone/email
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
-            // Either phone number or email must be provided
-            if (string.IsNullOrWhiteSpace(PhoneNumber) && string.IsNullOrWhiteSpace(Email))
-            {
-                yield return new ValidationResult(
-                    "Either Phone Number or Email must be provided as a means of contact.",
-                    new[] { nameof(PhoneNumber), nameof(Email) });
-            }
-
             // Validate UserType against allowed options
             if (!string.IsNullOrEmpty(UserType) && !UserTypeOptions.ContainsKey(UserType))
             {

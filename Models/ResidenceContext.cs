@@ -17,6 +17,19 @@ namespace AirBB.Models
         {
             base.OnModelCreating(modelBuilder);
 
+            // Configure relationships explicitly
+            modelBuilder.Entity<Residence>()
+                .HasOne(r => r.Location)
+                .WithMany()
+                .HasForeignKey(r => r.LocationID)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Residence>()
+                .HasOne(r => r.Client)
+                .WithMany()
+                .HasForeignKey(r => r.ClientID)
+                .OnDelete(DeleteBehavior.Restrict);
+
             modelBuilder.Entity<Location>().HasData(
                 new Location { LocationID = 1, Name = "Denver" },
                 new Location { LocationID = 2, Name = "Dallas" },
@@ -41,7 +54,7 @@ namespace AirBB.Models
             );
 
             modelBuilder.Entity<Residence>().HasData(
-                new 
+                new Residence
                 {
                     ResidenceID = 1,
                     Name = "Chicago Loop Apartment",
@@ -51,13 +64,13 @@ namespace AirBB.Models
                     BuildYear = 2015,
                     GuestNumber = 4,
                     BedroomNumber = 2,
-                    BathroomNumber = 1,
+                    BathroomNumber = 1.0m,
                     PricePerNight = 150.00m
                 }
             );
 
             modelBuilder.Entity<Reservation>().HasData(
-                new
+                new Reservation
                 {
                     ReservationID = 1,
                     ReservationStartDate = new DateTime(2024, 1, 1),

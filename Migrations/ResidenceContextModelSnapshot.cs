@@ -153,8 +153,8 @@ namespace AirBB.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("BathroomNumber")
-                        .HasColumnType("INTEGER");
+                    b.Property<decimal>("BathroomNumber")
+                        .HasColumnType("TEXT");
 
                     b.Property<int>("BedroomNumber")
                         .HasColumnType("INTEGER");
@@ -194,7 +194,7 @@ namespace AirBB.Migrations
                         new
                         {
                             ResidenceID = 1,
-                            BathroomNumber = 1,
+                            BathroomNumber = 1.0m,
                             BedroomNumber = 2,
                             BuildYear = 2015,
                             ClientID = 1,
@@ -222,13 +222,13 @@ namespace AirBB.Migrations
                     b.HasOne("AirBB.Models.Client", "Client")
                         .WithMany()
                         .HasForeignKey("ClientID")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("AirBB.Models.Location", "Location")
                         .WithMany()
                         .HasForeignKey("LocationID")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Client");
