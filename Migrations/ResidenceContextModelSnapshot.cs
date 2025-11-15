@@ -66,8 +66,9 @@ namespace AirBB.Migrations
 
             modelBuilder.Entity("AirBB.Models.Location", b =>
                 {
-                    b.Property<string>("LocationID")
-                        .HasColumnType("TEXT");
+                    b.Property<int>("LocationID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -80,37 +81,37 @@ namespace AirBB.Migrations
                     b.HasData(
                         new
                         {
-                            LocationID = "Den",
+                            LocationID = 1,
                             Name = "Denver"
                         },
                         new
                         {
-                            LocationID = "Dall",
+                            LocationID = 2,
                             Name = "Dallas"
                         },
                         new
                         {
-                            LocationID = "Det",
+                            LocationID = 3,
                             Name = "Detroit"
                         },
                         new
                         {
-                            LocationID = "Orl",
+                            LocationID = 4,
                             Name = "Orlando"
                         },
                         new
                         {
-                            LocationID = "Atl",
+                            LocationID = 5,
                             Name = "Atlanta"
                         },
                         new
                         {
-                            LocationID = "Chi",
+                            LocationID = 6,
                             Name = "Chicago"
                         },
                         new
                         {
-                            LocationID = "NY",
+                            LocationID = 7,
                             Name = "New York"
                         });
                 });
@@ -127,9 +128,8 @@ namespace AirBB.Migrations
                     b.Property<DateTime>("ReservationStartDate")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("ResidenceID")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
+                    b.Property<int>("ResidenceID")
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("ReservationID");
 
@@ -143,19 +143,23 @@ namespace AirBB.Migrations
                             ReservationID = 1,
                             ReservationEndDate = new DateTime(2024, 1, 5, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             ReservationStartDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            ResidenceID = "R1"
+                            ResidenceID = 1
                         });
                 });
 
             modelBuilder.Entity("AirBB.Models.Residence", b =>
                 {
-                    b.Property<string>("ResidenceID")
-                        .HasColumnType("TEXT");
+                    b.Property<int>("ResidenceID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
 
                     b.Property<int>("BathroomNumber")
                         .HasColumnType("INTEGER");
 
                     b.Property<int>("BedroomNumber")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("BuildYear")
                         .HasColumnType("INTEGER");
 
                     b.Property<int>("ClientID")
@@ -164,9 +168,8 @@ namespace AirBB.Migrations
                     b.Property<int>("GuestNumber")
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("LocationID")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
+                    b.Property<int>("LocationID")
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -190,12 +193,13 @@ namespace AirBB.Migrations
                     b.HasData(
                         new
                         {
-                            ResidenceID = "R1",
+                            ResidenceID = 1,
                             BathroomNumber = 1,
                             BedroomNumber = 2,
+                            BuildYear = 2015,
                             ClientID = 1,
                             GuestNumber = 4,
-                            LocationID = "Chi",
+                            LocationID = 6,
                             Name = "Chicago Loop Apartment",
                             PricePerNight = 150.00m,
                             ResidencePicture = "chicago.jpg"

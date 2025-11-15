@@ -4,7 +4,6 @@ namespace AirBB.Models
 {
     public class Reservation
     {
-        [Key]
         public int ReservationID { get; set; }
 
         // ReservationStartDate
@@ -14,7 +13,7 @@ namespace AirBB.Models
         public DateTime ReservationEndDate { get; set; }
 
         // ResidenceId (FK)
-        public string ResidenceID { get; set; } = string.Empty;
+        public int ResidenceID { get; set; }
 
         // Residence navigation property
         public Residence Residence { get; set; } = null!;

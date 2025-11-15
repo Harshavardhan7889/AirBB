@@ -3,7 +3,7 @@ namespace AirBB.Models
 {
     public class Location
     {
-        public string LocationID { get; set; } = null!;
+        public int LocationID { get; set; }
         public string Name { get; set; } = null!;
     }
 }

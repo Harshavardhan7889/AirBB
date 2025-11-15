@@ -35,7 +35,8 @@ namespace AirBB.Migrations
                 name: "Locations",
                 columns: table => new
                 {
-                    LocationID = table.Column<string>(type: "TEXT", nullable: false),
+                    LocationID = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
                     Name = table.Column<string>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
@@ -47,11 +48,13 @@ namespace AirBB.Migrations
                 name: "Residences",
                 columns: table => new
                 {
-                    ResidenceID = table.Column<string>(type: "TEXT", nullable: false),
+                    ResidenceID = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
                     Name = table.Column<string>(type: "TEXT", nullable: false),
                     ResidencePicture = table.Column<string>(type: "TEXT", nullable: false),
+                    LocationID = table.Column<int>(type: "INTEGER", nullable: false),
                     ClientID = table.Column<int>(type: "INTEGER", nullable: false),
-                    LocationID = table.Column<string>(type: "TEXT", nullable: false),
+                    BuildYear = table.Column<int>(type: "INTEGER", nullable: false),
                     GuestNumber = table.Column<int>(type: "INTEGER", nullable: false),
                     BedroomNumber = table.Column<int>(type: "INTEGER", nullable: false),
                     BathroomNumber = table.Column<int>(type: "INTEGER", nullable: false),
@@ -82,7 +85,7 @@ namespace AirBB.Migrations
                         .Annotation("Sqlite:Autoincrement", true),
                     ReservationStartDate = table.Column<DateTime>(type: "TEXT", nullable: false),
                     ReservationEndDate = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    ResidenceID = table.Column<string>(type: "TEXT", nullable: false)
+                    ResidenceID = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -105,24 +108,24 @@ namespace AirBB.Migrations
                 columns: new[] { "LocationID", "Name" },
                 values: new object[,]
                 {
-                    { "Atl", "Atlanta" },
-                    { "Chi", "Chicago" },
-                    { "Dall", "Dallas" },
-                    { "Den", "Denver" },
-                    { "Det", "Detroit" },
-                    { "NY", "New York" },
-                    { "Orl", "Orlando" }
+                    { 1, "Denver" },
+                    { 2, "Dallas" },
+                    { 3, "Detroit" },
+                    { 4, "Orlando" },
+                    { 5, "Atlanta" },
+                    { 6, "Chicago" },
+                    { 7, "New York" }
                 });
 
             migrationBuilder.InsertData(
                 table: "Residences",
-                columns: new[] { "ResidenceID", "BathroomNumber", "BedroomNumber", "ClientID", "GuestNumber", "LocationID", "Name", "PricePerNight", "ResidencePicture" },
-                values: new object[] { "R1", 1, 2, 1, 4, "Chi", "Chicago Loop Apartment", 150.00m, "chicago.jpg" });
+                columns: new[] { "ResidenceID", "BathroomNumber", "BedroomNumber", "BuildYear", "ClientID", "GuestNumber", "LocationID", "Name", "PricePerNight", "ResidencePicture" },
+                values: new object[] { 1, 1, 2, 2015, 1, 4, 6, "Chicago Loop Apartment", 150.00m, "chicago.jpg" });
 
             migrationBuilder.InsertData(
                 table: "Reservations",
                 columns: new[] { "ReservationID", "ReservationEndDate", "ReservationStartDate", "ResidenceID" },
-                values: new object[] { 1, new DateTime(2024, 1, 5, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "R1" });
+                values: new object[] { 1, new DateTime(2024, 1, 5, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 1 });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Reservations_ResidenceID",

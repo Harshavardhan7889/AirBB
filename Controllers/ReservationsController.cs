@@ -56,7 +56,7 @@ namespace AirBB.Controllers
 
             // add residence to favorite residences in session and cookie
             var cookies = new AirBBCookies(Response.Cookies);
-            var residences = session.GetMyResidences();
+            var residences = session.GetMyResidences() ?? new List<Residence>();
             residences.Add(residence);
             session.SetMyResidences(residences);
             cookies.SetMyResidenceIds(residences);
@@ -82,7 +82,7 @@ namespace AirBB.Controllers
 
             // Find and remove all reservations for this residence
             var reservations = context.Reservations
-                .Where(r => r.ResidenceID == residenceId)
+                .Where(r => r.Residence.ResidenceID.ToString() == residenceId)
                 .ToList();
 
             if (reservations.Any())
@@ -94,7 +94,7 @@ namespace AirBB.Controllers
             // Update session-stored reservations
             var session = new AirBBSession(HttpContext.Session);
             var myRes = session.GetMyResidences() ?? new List<Residence>();
-            myRes = myRes.Where(r => r.ResidenceID != residenceId).ToList();
+            myRes = myRes.Where(r => r.ResidenceID.ToString() != residenceId).ToList();
             session.SetMyResidences(myRes);
 
             // Update cookie-stored ids

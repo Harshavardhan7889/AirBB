@@ -21,7 +21,7 @@ namespace AirBB.Models
 
         public void SetMyResidenceIds(List<Residence> myresidences)
         {
-            List<string> ids = myresidences.Select(t => t.ResidenceID).ToList();
+            List<string> ids = myresidences.Select(t => t.ResidenceID.ToString()).ToList();
             string idsString = String.Join(Delimiter, ids);
             CookieOptions options = new CookieOptions { 
                 Expires = DateTime.Now.AddDays(7) 

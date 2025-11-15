@@ -32,7 +32,7 @@ public class HomeController : Controller
             {
                 var myresidences = context.Residences
                     .Include(t => t.Location)
-                    .Where(t => ids.Contains(t.ResidenceID))
+                    .Where(t => ids.Contains(t.ResidenceID.ToString()))
                     .ToList();
                 session.SetMyResidences(myresidences);
             }
@@ -47,7 +47,8 @@ public class HomeController : Controller
         // Filter by location
         if (model.ActiveWhere != "all")
         {
-            query = query.Where(r => r.Location.LocationID.ToLower() == model.ActiveWhere.ToLower());
+            query = query.Where(r => r.Location.LocationID.ToString().ToLower() ==
+                model.ActiveWhere.ToLower());
         }
 
         // Filter by guests
@@ -78,7 +79,7 @@ public class HomeController : Controller
 
         var residence = context.Residences
             .Include(r => r.Location)
-            .FirstOrDefault(r => r.ResidenceID == id);
+            .FirstOrDefault(r => r.ResidenceID.ToString() == id);
 
         if (residence == null)
             return NotFound(); 
@@ -87,7 +88,7 @@ public class HomeController : Controller
         {
             Residence = context.Residences
                 .Include(r => r.Location)
-                .FirstOrDefault(r => r.ResidenceID == id) ?? new Residence(),
+                .FirstOrDefault(r => r.ResidenceID.ToString() == id) ?? new Residence(),
             ActiveWhere = session.GetActiveWhere(),
             ActiveWhen = session.GetActiveWhen() ?? string.Empty,
             ActiveWho = session.GetActiveWho()

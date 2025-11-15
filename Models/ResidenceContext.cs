@@ -18,13 +18,13 @@ namespace AirBB.Models
             base.OnModelCreating(modelBuilder);
 
             modelBuilder.Entity<Location>().HasData(
-                new Location { LocationID = "Den", Name = "Denver" },
-                new Location { LocationID = "Dall", Name = "Dallas" },
-                new Location { LocationID = "Det", Name = "Detroit" },
-                new Location { LocationID = "Orl", Name = "Orlando" },
-                new Location { LocationID = "Atl", Name = "Atlanta" },
-                new Location { LocationID = "Chi", Name = "Chicago" },
-                new Location { LocationID = "NY", Name = "New York" }
+                new Location { LocationID = 1, Name = "Denver" },
+                new Location { LocationID = 2, Name = "Dallas" },
+                new Location { LocationID = 3, Name = "Detroit" },
+                new Location { LocationID = 4, Name = "Orlando" },
+                new Location { LocationID = 5, Name = "Atlanta" },
+                new Location { LocationID = 6, Name = "Chicago" },
+                new Location { LocationID = 7, Name = "New York" }
             );
 
             modelBuilder.Entity<Client>().HasData(
@@ -43,11 +43,12 @@ namespace AirBB.Models
             modelBuilder.Entity<Residence>().HasData(
                 new 
                 {
-                    ResidenceID = "R1",
+                    ResidenceID = 1,
                     Name = "Chicago Loop Apartment",
                     ResidencePicture = "chicago.jpg",
+                    LocationID = 6,
                     ClientID = 1,
-                    LocationID = "Chi",
+                    BuildYear = 2015,
                     GuestNumber = 4,
                     BedroomNumber = 2,
                     BathroomNumber = 1,
@@ -56,12 +57,12 @@ namespace AirBB.Models
             );
 
             modelBuilder.Entity<Reservation>().HasData(
-                new Reservation
+                new
                 {
                     ReservationID = 1,
                     ReservationStartDate = new DateTime(2024, 1, 1),
                     ReservationEndDate = new DateTime(2024, 1, 5),
-                    ResidenceID = "R1"  
+                    ResidenceID = 1  
                 }
             );
         }
