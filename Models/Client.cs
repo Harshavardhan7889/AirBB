@@ -13,14 +13,14 @@ namespace AirBB.Models
         public string Name { get; set; } = string.Empty;
         
         [Display(Name = "Phone Number")]
-        [Phone(ErrorMessage = "Please enter a valid phone number")]
-        [ContactRequired("Email", ErrorMessage = "Either Phone Number or Email must be provided")]
-        public string PhoneNumber { get; set; } = string.Empty;
+        [ContactRequired("Email", ErrorMessage = "Either Phone Number or Email must be provided.")]
+        [Phone(ErrorMessage = "Please enter a valid phone number.")]
+        public string? PhoneNumber { get; set; } = string.Empty;
         
         [Display(Name = "Email")]
-        [EmailAddress(ErrorMessage = "Please enter a valid email address")]
-        [ContactRequired("PhoneNumber", ErrorMessage = "Either Phone Number or Email must be provided")]
-        public string Email { get; set; } = string.Empty;
+        [ContactRequired("PhoneNumber", ErrorMessage = "Either Phone Number or Email must be provided.")]
+        [EmailAddress(ErrorMessage = "Please enter a valid email address.")]
+        public string? Email { get; set; } = string.Empty;
         
         [Required(ErrorMessage = "SSN is required")]
         [Display(Name = "SSN")]
@@ -43,7 +43,7 @@ namespace AirBB.Models
             { "Client", "Client" }
         };
 
-        // Custom validation logic - SIMPLIFIED since ContactRequired handles phone/email
+        // Simplified validation - only handle DOB and UserType
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
             // Validate UserType against allowed options

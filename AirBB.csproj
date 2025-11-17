@@ -19,9 +19,9 @@
     </PackageReference>
   </ItemGroup>
 
-  <ItemGroup>
+  <!-- <ItemGroup>
     <Content Include="residence.sqlite">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-  </ItemGroup>
+  </ItemGroup> -->
 </Project>

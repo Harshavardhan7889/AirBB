@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AirBB.Migrations
 {
     [DbContext(typeof(ResidenceContext))]
-    [Migration("20251115032931_Initial")]
+    [Migration("20251116005558_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -30,7 +30,6 @@ namespace AirBB.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Email")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Name")
@@ -39,7 +38,6 @@ namespace AirBB.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("PhoneNumber")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("SSN")
@@ -75,6 +73,7 @@ namespace AirBB.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
+                        .HasMaxLength(100)
                         .HasColumnType("TEXT");
 
                     b.HasKey("LocationID");
@@ -176,6 +175,7 @@ namespace AirBB.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
+                        .HasMaxLength(50)
                         .HasColumnType("TEXT");
 
                     b.Property<decimal>("PricePerNight")

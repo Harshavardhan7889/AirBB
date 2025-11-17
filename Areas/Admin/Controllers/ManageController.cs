@@ -26,28 +26,34 @@ namespace AirBB.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public new IActionResult User(Client client, bool IsEdit = false)
+        public new IActionResult User(Client user, bool IsEdit = false)
         {
+            // Convert empty strings to null for nullable fields to avoid database issues
+            if (string.IsNullOrWhiteSpace(user.PhoneNumber))
+                user.PhoneNumber = null;
+            if (string.IsNullOrWhiteSpace(user.Email))
+                user.Email = null;
+
             if (ModelState.IsValid)
             {
-                if (IsEdit && client.ClientID > 0)
+                if (IsEdit && user.ClientID > 0)
                 {
-                    var existingClient = context.Clients.Find(client.ClientID);
-                    if (existingClient != null)
+                    var existingUser = context.Clients.Find(user.ClientID);
+                    if (existingUser != null)
                     {
-                        existingClient.Name = client.Name;
-                        existingClient.PhoneNumber = client.PhoneNumber;
-                        existingClient.Email = client.Email;
-                        existingClient.SSN = client.SSN;
-                        existingClient.UserType = client.UserType;
-                        existingClient.DOB = client.DOB;
+                        existingUser.Name = user.Name;
+                        existingUser.PhoneNumber = user.PhoneNumber;
+                        existingUser.Email = user.Email;
+                        existingUser.SSN = user.SSN;
+                        existingUser.UserType = user.UserType;
+                        existingUser.DOB = user.DOB;
                         
                         context.SaveChanges();
                     }
                 }
                 else
                 {
-                    context.Clients.Add(client);
+                    context.Clients.Add(user);
                     context.SaveChanges();
                 }
                 
@@ -55,9 +61,9 @@ namespace AirBB.Areas.Admin.Controllers
             }
             else
             {
-                var users = context.Clients.OrderBy(c => c.Name).ToList();
+                var users = context.Clients.OrderBy(u => u.Name).ToList();
                 ViewBag.Users = users;
-                return View(client);
+                return View(user);
             }
         }
 

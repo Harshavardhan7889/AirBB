@@ -20,8 +20,8 @@ namespace AirBB.Migrations
                     ClientID = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     Name = table.Column<string>(type: "TEXT", maxLength: 100, nullable: false),
-                    PhoneNumber = table.Column<string>(type: "TEXT", nullable: false),
-                    Email = table.Column<string>(type: "TEXT", nullable: false),
+                    PhoneNumber = table.Column<string>(type: "TEXT", nullable: true),
+                    Email = table.Column<string>(type: "TEXT", nullable: true),
                     SSN = table.Column<string>(type: "TEXT", nullable: false),
                     UserType = table.Column<string>(type: "TEXT", nullable: false),
                     DOB = table.Column<DateTime>(type: "TEXT", nullable: true)
@@ -37,7 +37,7 @@ namespace AirBB.Migrations
                 {
                     LocationID = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    Name = table.Column<string>(type: "TEXT", nullable: false)
+                    Name = table.Column<string>(type: "TEXT", maxLength: 100, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -50,7 +50,7 @@ namespace AirBB.Migrations
                 {
                     ResidenceID = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    Name = table.Column<string>(type: "TEXT", nullable: false),
+                    Name = table.Column<string>(type: "TEXT", maxLength: 50, nullable: false),
                     ResidencePicture = table.Column<string>(type: "TEXT", nullable: false),
                     LocationID = table.Column<int>(type: "INTEGER", nullable: false),
                     ClientID = table.Column<int>(type: "INTEGER", nullable: false),
