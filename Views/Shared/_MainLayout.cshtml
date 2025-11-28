@@ -1,0 +1,49 @@
+@{
+    Layout = "_Layout"; // Ensure this layout file exists
+
+    string controller =
+        ViewContext.RouteData.Values["controller"]?.ToString() ?? "";
+    string action =
+        ViewContext.RouteData.Values["action"]?.ToString() ?? "";
+}
+<header>
+    <nav class="navbar navbar-expand-md navbar-dark bg-primary fixed-top">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/">AirBnb</a>
+            <button class="navbar-toggler" type="button" 
+                    data-bs-toggle="collapse"
+                    data-bs-target="#navbarSupportedContent" 
+                    aria-controls="navbarSupportedContent" aria-expanded="false" 
+                    aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <nav class="collapse navbar-collapse" id="navbarSupportedContent">
+                <div class="navbar-nav me-auto">
+                    <a class="nav-item nav-link 
+                      @(controller == "Residence" ? "active" : "")"
+                      asp-controller="Residence" asp-action="List">Homes</a>
+                    <a class="nav-item nav-link 
+                      @(controller == "Experience" ? "active" : "")"
+                      asp-controller="Experience" asp-action="List">Experiences</a>
+                    <a class="nav-item nav-link
+                      @(controller == "Service" ? "active" : "")"
+                      asp-controller="Service" asp-action="List">Services</a>
+                </div>
+                <div class="navbar-nav ms-auto">
+                    @{
+                        var session = new AirBB.Models.ExtensionMethods.AirBBSession(Context.Session);
+                        int? count = session.GetMyReservationCount();
+                    }
+                    <a asp-controller="Reservations" asp-action="Index"class="nav-item nav-link"><i class="fa-solid fa-house"></i> @(count.HasValue ? count.Value.ToString() : "0")</a>
+                    <a class="nav-item nav-link" 
+                      asp-area="Admin" asp-controller="Home" asp-action="Index">Admin</a>
+                </div>
+            </nav>
+        </div>
+    </nav>
+</header>
+<main>
+    @RenderBody() 
+    @RenderSection("scripts", required: false)
+</main>
+

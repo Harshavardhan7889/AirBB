@@ -1,0 +1,44 @@
+@model AirBB.Models.ViewModels.ResidenceViewModel
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h2 class="text-center p-2">Residence Details</h2>
+<div class="row">
+    <div class="col-6 offset-3">
+        <ul class="list-group text-center">
+            <li class="list-group-item">
+                <img src="~/images/@Model.Residence.ResidencePicture" alt="" />
+                <h3>@Model.Residence.Name</h3>
+            </li>
+            <li class="list-group-item">
+                <h4>Location: @Model.Residence.Location.Name</h4>
+            </li>
+            <li class="list-group-item">
+                <h4>Number Of Guests: @Model.Residence.GuestNumber</h4>
+            </li>
+            <li class="list-group-item">
+                <h4>Number Of Bedrooms: @Model.Residence.BedroomNumber</h4>
+            </li>
+            <li class="list-group-item">
+                <h4>Number Of Bathrooms: @Model.Residence.BathroomNumber</h4>
+            </li>
+            <li class="list-group-item">
+                <h4>Price Per Night: $@Model.Residence.PricePerNight</h4>
+            </li>
+            <li class="list-group-item">
+                <form asp-action="Add" asp-controller="Reservations" method="post">
+                    <a asp-action="Index" class="btn btn-primary"
+                       asp-route-ActiveWhere="@Model.ActiveWhere"
+                       asp-route-ActiveWhen="@Model.ActiveWhen"
+                       asp-route-ActiveWho="@Model.ActiveWho">Back to Home</a>
+                    <button type="submit" class="btn btn-primary">
+                        Reserve
+                    </button>
+                    <input type="hidden" asp-for="Residence.ResidenceID" />
+                </form>
+            </li>
+        </ul>
+    </div>
+</div>

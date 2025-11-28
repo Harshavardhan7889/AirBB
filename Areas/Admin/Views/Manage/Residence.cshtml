@@ -1,0 +1,230 @@
+@model Residence
+@{
+    ViewBag.Title = "Residence Management";
+    var residences = ViewBag.Residences as List<AirBB.Models.Residence> ?? new List<AirBB.Models.Residence>();
+    var locations = ViewBag.Locations as List<AirBB.Models.Location> ?? new List<AirBB.Models.Location>();
+    var owners = ViewBag.Owners as List<AirBB.Models.Client> ?? new List<AirBB.Models.Client>();
+}
+
+@section scripts {
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+    <script src="~/js/residence-validation.js"></script>
+    <script src="~/js/residence-management.js"></script>
+}
+
+<div class="container-fluid">
+    <h2>Residence Management</h2>
+    
+    <!-- Tab Navigation -->
+    <ul class="nav nav-tabs" id="residenceTabs" role="tablist">
+        <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="add-residence-tab" data-bs-toggle="tab" data-bs-target="#add-residence" type="button" role="tab">
+                Add New Residence
+            </button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="list-residences-tab" data-bs-toggle="tab" data-bs-target="#list-residences" type="button" role="tab">
+                All Residences
+            </button>
+        </li>
+    </ul>
+
+    <!-- Tab Content -->
+    <div class="tab-content" id="residenceTabContent">
+        <!-- Add Residence Tab -->
+        <div class="tab-pane fade show active" id="add-residence" role="tabpanel">
+            <div class="card mt-3">
+                <div class="card-body">
+                    <!-- ADDED: Model-level validation summary -->
+                    @if (!ViewData.ModelState.IsValid)
+                    {
+                        <div class="alert alert-danger">
+                            <strong>Please fix the errors below:</strong>
+                        </div>
+                    }
+                    
+                    <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+                    <form id="residence-form" asp-action="Residence" method="post" class="admin-form">
+                        <input asp-for="ResidenceID" type="hidden" />
+                        <input type="hidden" id="IsEdit" name="IsEdit" value="false" />
+                        
+                        <div class="row mb-2">
+                            <label asp-for="Name" class="col-form-label col-md-2">Name</label>
+                            <div class="col-md-4">
+                                <input asp-for="Name" class="form-control" placeholder="Property name" />
+                                <small class="form-text text-muted">Alphanumeric characters only, max 50 characters</small>
+                            </div>
+                            <div class="col">
+                                <span asp-validation-for="Name" class="text-danger"></span>
+                            </div>
+                        </div>
+                        
+                        <div class="row mb-2">
+                            <label asp-for="LocationID" class="col-form-label col-md-2">Available Locations</label>
+                            <div class="col-md-4">
+                                <select asp-for="LocationID" class="form-control">
+                                    <option value="0">-- Select Location --</option>
+                                    @foreach (var location in locations)
+                                    {
+                                        <option value="@location.LocationID">@location.Name</option>
+                                    }
+                                </select>
+                            </div>
+                            <div class="col">
+                                <span asp-validation-for="LocationID" class="text-danger"></span>
+                            </div>
+                        </div>
+                        
+                        <div class="row mb-2">
+                            <label asp-for="ClientID" class="col-form-label col-md-2">Owner</label>
+                            <div class="col-md-4">
+                                <select asp-for="ClientID" class="form-control">
+                                    <option value="0">-- Select Owner --</option>
+                                    @foreach (var owner in owners)
+                                    {
+                                        <option value="@owner.ClientID">@owner.Name (ID: @owner.ClientID)</option>
+                                    }
+                                </select>
+                            </div>
+                            <div class="col">
+                                <span asp-validation-for="ClientID" class="text-danger"></span>
+                            </div>
+                        </div>
+                        
+                        <div class="row mb-2">
+                            <label asp-for="GuestNumber" class="col-form-label col-md-2">Accommodation (Guests)</label>
+                            <div class="col-md-4">
+                                <input asp-for="GuestNumber" class="form-control" type="number" min="1" max="50" />
+                                <small class="form-text text-muted">Integer only, 1-50 guests</small>
+                            </div>
+                            <div class="col">
+                                <span asp-validation-for="GuestNumber" class="text-danger"></span>
+                            </div>
+                        </div>
+                        
+                        <div class="row mb-2">
+                            <label asp-for="BedroomNumber" class="col-form-label col-md-2">Bedrooms</label>
+                            <div class="col-md-4">
+                                <input asp-for="BedroomNumber" class="form-control" type="number" min="0" max="20" />
+                                <small class="form-text text-muted">Integer only, 0-20 bedrooms (0 for studio)</small>
+                            </div>
+                            <div class="col">
+                                <span asp-validation-for="BedroomNumber" class="text-danger"></span>
+                            </div>
+                        </div>
+                        
+                        <div class="row mb-2">
+                            <label asp-for="BathroomNumber" class="col-form-label col-md-2">Bathrooms</label>
+                            <div class="col-md-4">
+                                <input asp-for="BathroomNumber" class="form-control" type="number" step="0.5" min="0.5" max="20" />
+                                <small class="form-text text-muted">Must be whole number or end with .5 (e.g., 1, 1.5, 2)</small>
+                            </div>
+                            <div class="col">
+                                <span asp-validation-for="BathroomNumber" class="text-danger"></span>
+                            </div>
+                        </div>
+                        
+                        <div class="row mb-2">
+                            <label asp-for="BuildYear" class="col-form-label col-md-2">Built Year</label>
+                            <div class="col-md-4">
+                                <input asp-for="BuildYear" class="form-control" type="number" min="1874" max="@DateTime.Now.Year" />
+                                <small class="form-text text-muted">Must be past year, max 150 years ago</small>
+                            </div>
+                            <div class="col">
+                                <span asp-validation-for="BuildYear" class="text-danger"></span>
+                            </div>
+                        </div>
+                        
+                        <div class="row mb-2">
+                            <label asp-for="PricePerNight" class="col-form-label col-md-2">Price Per Night ($)</label>
+                            <div class="col-md-4">
+                                <input asp-for="PricePerNight" class="form-control" type="number" step="0.01" min="0.01" max="10000" />
+                                <small class="form-text text-muted">Numeric only, $0.01 - $10,000</small>
+                            </div>
+                            <div class="col">
+                                <span asp-validation-for="PricePerNight" class="text-danger"></span>
+                            </div>
+                        </div>
+                        
+                        <div class="row mb-2">
+                            <label asp-for="ResidencePicture" class="col-form-label col-md-2">Picture Filename</label>
+                            <div class="col-md-4">
+                                <input asp-for="ResidencePicture" class="form-control" placeholder="e.g., chicago-loop-apartment.jpg" />
+                                <small class="form-text text-muted">Image filename (optional)</small>
+                            </div>
+                            <div class="col">
+                                <span asp-validation-for="ResidencePicture" class="text-danger"></span>
+                            </div>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="offset-md-2 col">
+                                <button type="submit" class="btn btn-primary admin-btn" id="submit-btn">Add Residence</button>
+                                <button type="button" class="btn btn-secondary admin-btn" id="cancel-btn" style="display:none;">Cancel</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- List Residences Tab -->
+        <div class="tab-pane fade" id="list-residences" role="tabpanel">
+            <div class="card mt-3">
+                <div class="card-body">
+                    <h5 class="card-title">All Residences</h5>
+                    
+                    <!-- Alert for deletion warnings -->
+                    <div id="deletion-alert" class="alert alert-warning" style="display:none;">
+                        <strong>Warning:</strong> <span id="deletion-message"></span>
+                    </div>
+                    
+                    <div class="table-responsive">
+                        <table class="table table-striped table-hover">
+                            <thead class="table-dark">
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Name</th>
+                                    <th>Location</th>
+                                    <th>Owner</th>
+                                    <th>Guests</th>
+                                    <th>Bedrooms</th>
+                                    <th>Bathrooms</th>
+                                    <th>Built Year</th>
+                                    <th>Price/Night</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var residence in residences)
+                                {
+                                    <tr id="residence-row-@residence.ResidenceID">
+                                        <td>@residence.ResidenceID</td>
+                                        <td>@residence.Name</td>
+                                        <td>@residence.Location?.Name</td>
+                                        <td>@residence.Client?.Name</td>
+                                        <td>@residence.GuestNumber</td>
+                                        <td>@residence.BedroomNumber</td>
+                                        <td>@residence.BathroomNumber</td>
+                                        <td>@residence.BuildYear</td>
+                                        <td>$@residence.PricePerNight.ToString("F2")</td>
+                                        <td>
+                                            <button class="btn btn-sm btn-warning edit-btn" data-residence-id="@residence.ResidenceID">
+                                                <i class="fas fa-edit"></i> Edit
+                                            </button>
+                                            <button class="btn btn-sm btn-danger delete-btn" data-residence-id="@residence.ResidenceID" data-residence-name="@residence.Name">
+                                                <i class="fas fa-trash"></i> Delete
+                                            </button>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
